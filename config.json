@@ -1,0 +1,64 @@
+{
+  "launch_date": "2026-12-21",
+  "launch_label": "Demo su Steam",
+  "people": [
+    {
+      "name": "Giuseppe",
+      "role": "Game Director, Lead Programmer",
+      "bio": "Guida il progetto e programma."
+    },
+    {
+      "name": "Lorenzo",
+      "role": "Level Designer",
+      "bio": "Disegna i livelli."
+    },
+    {
+      "name": "Nazar",
+      "role": "Senior 3D Artist",
+      "bio": "Crea la grafica 3D."
+    }
+  ],
+  "chapter_title": "Capitolo 1: Villaggio Lago Nero",
+  "chapter_note": "La grafica è ancora in gran parte provvisoria.",
+  "languages": 8,
+  "phases": [
+    {
+      "name": "Fondamenta",
+      "when": "Ott – Dic 2026",
+      "what": "Le basi del gioco"
+    },
+    {
+      "name": "Vertical slice",
+      "when": "Gen – Apr 2027",
+      "what": "Capitolo 1 giocabile"
+    },
+    {
+      "name": "Steam e demo",
+      "when": "Mag – Ott 2027",
+      "what": "Pagina Steam e demo"
+    },
+    {
+      "name": "Contenuti",
+      "when": "Da fine 2027",
+      "what": "Nuove regioni"
+    }
+  ],
+  "phase_current": 1,
+  "gallery": [],
+  "impact": {
+    "tokens_per_commit": 100000,
+    "wh_per_1k_tokens": 0.5,
+    "kg_co2_per_kwh": 0.4,
+    "l_water_per_kwh": 2,
+    "flight_kg": 900,
+    "car_kg_per_km": 0.12,
+    "phone_wh": 12,
+    "shower_l": 60,
+    "glass_l": 0.25
+  },
+  "tagline": "Un dark fantasy open world da giocare da soli o in tre.",
+  "steam_url": null,
+  "donate_url": "https://ko-fi.com/obolusstudio",
+  "trailer": null,
+  "donate_text": "Se ti piace il progetto, puoi sostenerci con una donazione libera."
+}

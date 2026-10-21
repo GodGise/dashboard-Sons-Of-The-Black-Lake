@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="media/logo.svg" type="image/svg+xml">
+<meta name="color-scheme" content="dark">
+<title>Chi siamo – Obolus Studio</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<nav id="nav"></nav><div id="pb"></div>
+
+<header class="hero">
+  <canvas id="fx"></canvas><div class="blob"></div>
+  <p class="eyebrow">Obolus Studio</p>
+  <h1><span class="grad">Tre amici. Un gioco.</span></h1>
+  <p class="lead">Siamo Obolus Studio: tre persone, un gioco.</p>
+</header>
+
+<main>
+<section id="team"><div class="rv"><p class="k" style="color:var(--orange)">Chi siamo</p><h2>Chi fa cosa.</h2></div>
+  <div class="ppl" id="ppl"></div>
+</section>
+
+<section id="come"><div class="rv"><p class="k" style="color:var(--green)">Come lavoriamo</p><h2>Poche regole, chiare.</h2></div>
+  <div class="rules">
+    <div class="card"><h3 style="margin:0">Ci sentiamo ogni settimana</h3></div>
+    <div class="card"><h3 style="margin:0">Una build ogni mese</h3></div>
+    <div class="card"><h3 style="margin:0">Decidiamo insieme</h3></div>
+    <div class="card"><h3 style="margin:0">Piani realistici</h3></div>
+  </div>
+</section>
+
+<section id="tech"><div class="rv"><p class="k" style="color:var(--blue)">Tecnologia</p><h2>Con cosa lo costruiamo.</h2></div>
+  <div class="chips"><span>Unity</span><span>C#</span><span>Blender</span><span>GitHub</span><span>Steam</span><span>Rete co-op</span></div>
+</section>
+
+<section><div class="card rv" style="text-align:center;padding:56px 24px"><p class="k grad">E adesso?</p><h2>Guarda a che punto siamo.</h2><p class="sub" style="margin:0 auto 24px">Si aggiorna da solo.</p><a class="cta" href="progressi.html">Vedi i progressi</a></div></section>
+</main>
+<footer id="ft"></footer>
+
+<script src="i18n.js"></script>
+<script src="site.js"></script>
+<script>
+const {$,el}=site;
+site.cfg.then(C=>{
+  $('ppl').replaceChildren(...Object.values(C.people||{}).map((v,i)=>{const c=site.person(v,i);c.querySelector('.mut').replaceWith(el('span','role',v.role));if(v.bio)c.append(el('p','mut',v.bio));return c}));
+}).finally(()=>site.reveal());
+</script>
+<script src="fx.js"></script>
+</body></html>

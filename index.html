@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="media/logo.svg" type="image/svg+xml">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Sons of the Black Lake: un dark fantasy open world da giocare da soli o in tre. Un gioco di Obolus Studio.">
+<meta property="og:title" content="Sons of the Black Lake – Obolus Studio">
+<meta property="og:description" content="Un dark fantasy open world da giocare da soli o in tre. Seguici mentre lo costruiamo.">
+<title>Sons of the Black Lake – Obolus Studio</title>
+<link rel="stylesheet" href="style.css"></head><body>
+<nav id="nav"></nav><div id="pb"></div>
+
+<header class="hero home">
+  <canvas id="fx"></canvas><div class="blob"></div>
+  <img class="mark" src="media/logo.svg" alt="Logo di Obolus Studio">
+  <p class="eyebrow">Obolus Studio presenta</p>
+  <h1 class="big"><span class="grad">Sons of the Black Lake</span></h1>
+  <p class="lead" id="tag">Un dark fantasy open world da giocare da soli o in tre.</p>
+  <div class="cd" id="cd"></div>
+  <div class="cdl" id="cdl"></div>
+  <div><a class="cta warm" id="hs" href="#sostieni">Sostienici</a><a class="cta2" href="#gioco">Scopri il gioco</a></div>
+</header>
+
+<main id="app">
+<section id="trailer"><div class="rv"><p class="k grad">Trailer</p><h2>Guardalo in azione.</h2></div>
+  <div class="vid rv" id="vid"><div><div class="play"></div><p>Il trailer arriva presto.</p></div></div>
+</section>
+
+<section id="gioco"><div class="rv"><p class="k grad">Il gioco</p><h2>Un'avventura dark fantasy.</h2><p class="sub">Un open world da vivere da soli o in compagnia, per PC su Steam.</p></div>
+  <div class="feat">
+    <div class="card"><div class="ic" style="--c:var(--blue)">⚔</div><h3>Combattimento</h3><p>Un sistema di combattimento completo.</p></div>
+    <div class="card"><div class="ic" style="--c:var(--purple)">✦</div><h3>Classi</h3><p>Più classi, ognuna con il suo stile.</p></div>
+    <div class="card"><div class="ic" style="--c:var(--green)">☻</div><h3>Co-op</h3><p>Da solo o con gli amici.</p></div>
+    <div class="card"><div class="ic" style="--c:var(--orange)">☾</div><h3>Giorno e notte</h3><p>Un mondo che cambia con il tempo.</p></div>
+    <div class="card"><div class="ic" style="--c:var(--pink)">◈</div><h3>Stile retro</h3><p>Un look che ricorda i classici.</p></div>
+    <div class="card"><div class="ic" style="--c:var(--teal)">文</div><h3>Otto lingue</h3><p>Giocabile in otto lingue.</p></div>
+  </div>
+</section>
+
+<section id="storia"><div class="rv"><p class="k" style="color:var(--pink)">La storia</p><h2>Il primo capitolo.</h2><p class="sub">Tutto comincia a Villaggio Lago Nero, un piccolo borgo affacciato su acque scure. Qui vive il protagonista, tra vicini, mestieri e giornate che sembrano tutte uguali. Ma questo è un mondo dark fantasy: la calma non dura per sempre. Il primo capitolo ti presenta il suo passato e ti guida, con calma, dentro il gioco. Sarà la nostra demo su Steam.</p></div></section>
+
+<section id="galleria"><div class="rv"><p class="k" style="color:var(--teal)">Galleria</p><h2>Il mondo prende forma.</h2></div><div class="gal rv" id="gal"></div></section>
+
+<section id="progressi"><div class="rv"><p class="k" style="color:var(--green)">A che punto siamo</p><h2>Si costruisce ogni giorno.</h2><p class="sub">Lo stato del capitolo 1.</p></div>
+  <div class="card chap rv"><div class="ring"><svg width="180" height="180" viewBox="0 0 180 180"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a84ff"/><stop offset=".5" stop-color="#bf5af2"/><stop offset="1" stop-color="#ff375f"/></linearGradient></defs><circle cx="90" cy="90" r="76" fill="none" stroke="var(--line)" stroke-width="14"/><circle id="rg" cx="90" cy="90" r="76" fill="none" stroke="url(#gr)" stroke-width="14" stroke-linecap="round" stroke-dasharray="477.5" stroke-dashoffset="477.5" style="transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.2,1)"/></svg><div class="t"><b id="cp">—</b><span>tappe pronte</span></div></div>
+  <div><ol class="tl" id="cl"></ol><div class="note" id="cn"></div></div></div>
+  <div class="mini rv" id="nums"></div>
+  <a class="more" href="progressi.html">Tutti i numeri e la roadmap →</a>
+</section>
+
+<section id="team"><div class="rv"><p class="k" style="color:var(--orange)">Il team</p><h2>Tre persone, un gioco.</h2></div><div class="ppl rv" id="ppl"></div><a class="more" href="chi-siamo.html">Conosci il team →</a></section>
+
+<section id="sostieni"><div class="card support rv"><p class="k grad">Sostienici</p><h2>Aiutaci a finire il gioco.</h2><p class="sub" id="dt"></p><a class="cta warm" id="db" href="#">Sostienici</a></div></section>
+</main>
+<footer id="ft"></footer>
+
+<script src="i18n.js"></script>
+<script src="site.js"></script>
+<script>
+const {$,f,el}=site;
+Promise.all([site.cfg,site.data]).then(([C,D])=>{
+  if(C.tagline)$('tag').textContent=C.tagline;
+  site.countdown(C,$('cd'),$('cdl'));
+  /* trailer */
+  if(/^[\w-]{11}$/.test(C.trailer||'')){const i=el('iframe');i.src='https://www.youtube-nocookie.com/embed/'+C.trailer;i.title='Trailer';i.allow='accelerometer;encrypted-media;picture-in-picture;fullscreen';i.allowFullscreen=true;i.loading='lazy';$('vid').replaceChildren(i)}
+  /* galleria */
+  const gl=(C.gallery||[]).map(g=>typeof g==='string'?{src:g}:g).filter(g=>/^media\/[\w\-./]+\.(png|jpe?g|webp|gif|mp4|webm)$/i.test(g.src||''));
+  if(gl.length)$('gal').replaceChildren(...gl.map(g=>{const fg=el('figure'),v=/\.(mp4|webm)$/i.test(g.src),m=el(v?'video':'img');m.src=g.src;if(v){m.controls=true;m.preload='metadata';m.playsInline=true}else{m.alt=g.caption||'Immagine del gioco';m.loading='lazy'}fg.append(m);if(g.caption)fg.append(el('figcaption','',g.caption));return fg}));
+  else{const ph=[['Il villaggio','linear-gradient(135deg,#1b2a4a,#3a1f5c)'],['Di notte','linear-gradient(135deg,#2a1b3a,#5c1f3a)'],['Combattimento','linear-gradient(135deg,#4a1b1b,#7a3a14)'],['Co-op','linear-gradient(135deg,#1b3a2a,#1f4a5c)'],['Gli ambienti','linear-gradient(135deg,#10222b,#1b3a3a)'],['I personaggi','linear-gradient(135deg,#222,#3a3a55)']];
+    $('gal').replaceChildren(...ph.map(([t,b])=>{const d=el('div','shot');d.style.setProperty('--b',b);d.append(el('b','',t),el('span','','In arrivo'));return d}))}
+  /* progressi */
+  const ch=D.chapter||[],dn=ch.filter(x=>x.status==='done').length,SL={done:'✓',doing:'…',todo:''};
+  $('cp').textContent=dn+' / '+(ch.length-ch.filter(x=>x.detail).length||ch.length);
+  setTimeout(()=>{$('rg').style.strokeDashoffset=477.5*(1-(ch.length?dn/ch.length:0))},300);
+  $('cl').replaceChildren(...ch.map(x=>{const li=el('li');li.append(el('span','dot '+x.status,SL[x.status]),el('span','',x.name));if(x.detail)li.append(el('span','mut','· '+x.detail));return li}));
+  $('cn').textContent=C.chapter_note||'';
+  const NU=D.numbers||{};
+  $('nums').replaceChildren(site.tile('Script di gioco',NU.scripts,'var(--blue)','file di codice'),site.tile('Scene',NU.scenes,'var(--purple)','livelli e menu'),site.tile('Modelli 3D',NU.models,'var(--orange)','di Nazar'),site.tile('Audio',NU.audio,'var(--pink)','musiche e suoni'));
+  /* team */
+  $('ppl').replaceChildren(...Object.values(C.people||{}).map((v,i)=>site.person(v,i)));
+  /* donazioni */
+  $('dt').textContent=C.donate_text||'';site.donate(C,$('db'));
+  if(/^https:\/\//.test(C.steam_url||'')){$('hs').textContent='Wishlist su Steam';$('hs').href=C.steam_url}
+  site.reveal();
+}).catch(()=>site.fail());
+</script><script src="fx.js"></script></body></html>

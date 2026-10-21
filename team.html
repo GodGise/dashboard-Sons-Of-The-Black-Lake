@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="media/logo.svg" type="image/svg+xml">
+<meta name="color-scheme" content="dark">
+<title>Area team – Obolus Studio</title>
+<link rel="stylesheet" href="style.css"></head><body>
+<nav id="nav"></nav><div id="pb"></div>
+
+<header class="hero">
+  <canvas id="fx"></canvas><div class="blob"></div>
+  <p class="eyebrow">Area riservata</p>
+  <h1><span class="grad">Solo per il team.</span></h1>
+  <p class="lead">Settimana, novità, obiettivi e decisioni.</p>
+</header>
+
+<main>
+<section id="lock" style="padding-top:40px"><div class="card lockbox rv">
+  <h3 style="margin:0 0 6px">Inserisci la password</h3>
+  <p class="mut" style="margin:0 0 16px">Te la dà Giuseppe. I dati sono cifrati e si aprono solo qui, nel tuo browser.</p>
+  <form id="lf"><input id="pw" type="password" autocomplete="current-password" placeholder="Password" aria-label="Password"><button class="cta" type="submit">Entra</button></form>
+  <div class="err" id="le" style="padding:12px 0 0;text-align:left"></div>
+</div></section>
+<div id="app" hidden>
+<section id="settimana"><div class="rv"><p class="k" style="color:var(--pink)">Questa settimana</p><h2>Noi, contro la settimana scorsa.</h2><p class="sub" id="wsub"></p></div>
+  <div class="seg rv"><label>Persona&nbsp;<select id="who"></select></label><label class="sw"><input type="checkbox" id="same" checked>Stesso numero di giorni</label></div>
+  <div class="tiles rv" id="cards"></div>
+  <div class="grid rv" style="margin-top:16px">
+    <div class="card"><h3 style="margin:0">Commit</h3><div class="lg"><span><i style="background:var(--pink)"></i>Questa settimana</span><span><i style="background:var(--line)"></i>Scorsa</span></div><div id="g1"></div></div>
+    <div class="card"><h3 style="margin:0">PR unite</h3><div class="lg"><span><i style="background:var(--blue)"></i>Questa settimana</span><span><i style="background:var(--line)"></i>Scorsa</span></div><div id="g2"></div></div>
+  </div>
+  <div class="card rv" style="margin-top:16px"><h3 style="margin:0 0 4px">Andamento</h3><div class="mut">Commit a settimana, ultime 9 settimane. In blu la settimana record.</div><div class="col" id="hist"></div></div>
+  <div class="card rv" style="margin-top:16px"><h3 style="margin:0 0 4px">Dettaglio per persona</h3><div class="mut" style="margin-bottom:8px">Le righe includono asset e file importati.</div><div class="tw"><table><thead><tr><th>Persona</th><th>Commit</th><th>Scorsa</th><th>PR unite</th><th>Scorsa</th><th>Righe +</th><th>Scorsa</th></tr></thead><tbody id="tb"></tbody></table></div></div>
+</section>
+
+<section id="novita"><div class="grid">
+  <div class="card rv"><p class="k" style="color:var(--blue)">Ultime novità</p><h3 style="margin:0 0 6px;font-size:24px">Appena unito.</h3><ul class="l" id="news"></ul></div>
+  <div class="card rv"><p class="k" style="color:var(--orange)">Da decidere</p><h3 style="margin:0 0 6px;font-size:24px">In attesa di noi.</h3><ul class="l" id="todo"></ul></div>
+  <div class="card rv"><p class="k" style="color:var(--green)" id="gt">Obiettivi della settimana</p><h3 style="margin:0 0 6px;font-size:24px">Da chiudere entro domenica.</h3><ul class="l" id="goals"></ul></div>
+</div></section>
+
+</div>
+</main>
+<footer id="ft"></footer>
+
+<script src="i18n.js"></script>
+<script src="site.js"></script>
+<script>
+const {$,f,el,add}=site;
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function dec(blob,pw){
+  const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(blob.salt),iterations:blob.iter,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);
+  return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(blob.iv)},key,b64(blob.ct))));
+}
+async function open(pw){
+  const [pb,nb]=await Promise.all([fetch('private.enc',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error('missing');return r.json()}),fetch('notes.enc',{cache:'no-store'}).then(r=>r.ok?r.json():null)]);
+  const D=await dec(pb,pw),K=nb?await dec(nb,pw):{};
+  const [C,PUB]=await Promise.all([site.cfg,site.data]);
+  show(D,K,C,PUB);
+}
+function show(D,K,C,PUB){
+  const LG=K.logins||{},N=a=>LG[a]||a,okU=u=>/^https:\/\/github\.com\//.test(u||''),R=PUB.records||{};
+  const T=D.week_start,L=D.prev_week_start,today=D.generated.slice(0,10);
+  const days=Math.round((new Date(today)-new Date(T))/864e5)+1;
+  const link=(p,t)=>{if(okU(p.url)){const a=el('a','',t);a.href=p.url;a.target='_blank';a.rel='noopener';return a}return el('span','',t)};
+  /* settimana */
+  const people=[...new Set([...D.commits.map(c=>c.author),...D.prs.map(p=>p.author)])].sort();
+  $('who').append(new Option('Tutti','')); people.forEach(p=>$('who').append(new Option(N(p),p)));
+  $('wsub').textContent='Aggiornato il '+new Date(D.generated).toLocaleString(site.loc,{dateStyle:'long',timeStyle:'short'});
+  function render(){
+    const who=$('who').value,same=$('same').checked,endL=same?add(L,days-1):add(L,6);
+    const inW=(d,w)=>w==='t'?(d>=T&&d<=today):(d>=L&&d<=endL);
+    const S={};const get=a=>S[a]||(S[a]={a,c:[0,0],p:[0,0],l:[0,0],d:[0,0],o:[0,0]});
+    D.commits.forEach(c=>{[['t',0],['l',1]].forEach(([w,i])=>{if(inW(c.day,w)){const s=get(c.author);s.c[i]+=c.commits;s.l[i]+=c.additions;s.d[i]+=c.deletions}})});
+    D.prs.forEach(p=>{[['t',0],['l',1]].forEach(([w,i])=>{if(p.merged&&inW(p.merged,w))get(p.author).p[i]++;if(p.opened&&inW(p.opened,w))get(p.author).o[i]++})});
+    const rows=Object.values(S).sort((a,b)=>b.c[0]+b.c[1]-a.c[0]-a.c[1]);
+    const sel=rows.filter(r=>!who||r.a===who),sum=k=>[0,1].map(i=>sel.reduce((x,r)=>x+r[k][i],0));
+    const defs=[['Commit','c',1,'var(--pink)'],['PR unite','p',1,'var(--blue)'],['PR aperte','o',1,'var(--purple)'],['Righe aggiunte','l',1,'var(--orange)'],['Righe rimosse','d',0,'var(--teal)']];
+    $('cards').replaceChildren(...defs.map(([n,k,good,c])=>{const [t,l]=sum(k),d=el('div','tile');d.style.setProperty('--c',c);
+      const big=el('div','n',f(t)),mm=el('div','m','scorsa '+f(l));
+      if(l){const p=(t-l)/l,s=el('span',good&&p?(p>0?'up':'down'):'',' '+(p>0?'+':'')+Math.round(p*100)+'%');mm.append(s)}
+      d.append(el('div','l',n),big,mm);return d}));
+    const bars=(box,k,col)=>{box.replaceChildren();const R=sel.filter(r=>r[k][0]||r[k][1]),m=Math.max(1,...R.flatMap(r=>r[k]));
+      R.forEach(r=>{const g=el('div','g');g.append(el('div','nm',N(r.a)));[0,1].forEach(i=>{const l=el('div','bl'),b=el('div','bar');b.style.width='0';b.style.background=i?'var(--line)':col;l.append(b,el('span','bv',f(r[k][i])));g.append(l);requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.width=r[k][i]/m*72+'%'}))});box.append(g)})};
+    bars($('g1'),'c','linear-gradient(90deg,var(--pink),var(--orange))');bars($('g2'),'p','linear-gradient(90deg,var(--blue),var(--purple))');
+    $('tb').replaceChildren(...sel.map(r=>{const tr=el('tr');[N(r.a),f(r.c[0]),f(r.c[1]),f(r.p[0]),f(r.p[1]),f(r.l[0]),f(r.l[1])].forEach(x=>tr.append(el('td','',x)));return tr}));
+  }
+  $('who').onchange=$('same').onchange=render;render();
+  const W={};D.history.forEach(h=>W[h.week]=(W[h.week]||0)+h.commits);
+  const ws=[];for(let i=8;i>=0;i--)ws.push(add(T,-7*i));const mx=Math.max(1,...ws.map(w=>W[w]||0)),bestW=(R.best_week||{}).week;
+  $('hist').replaceChildren(...ws.map(w=>{const d=el('div',w===T?'cur':(w===bestW?'best':'')),b=el('i');b.style.height=Math.max(4,(W[w]||0)/mx*120)+'px';d.append(el('span','',f(W[w]||0)),b,el('span','',new Date(w+'T12:00:00').toLocaleDateString(site.loc,{day:'numeric',month:'short'})));return d}));
+
+  /* novità, da decidere, obiettivi */
+  $('news').replaceChildren(...(D.recent||[]).map(p=>{const li=el('li');li.append(link(p,p.title),el('span','mut','· '+N(p.author)+' · '+new Date(p.merged+'T12:00:00').toLocaleDateString(site.loc,{day:'numeric',month:'short'})));return li}));
+  const td=[...(D.open_prs||[]).map(p=>{const li=el('li');li.append(el('span','pill o',p.draft?'bozza':'PR'),link(p,p.title),el('span','mut','· '+N(p.author)));return li}),
+    ...(K.decisions||[]).map(x=>{const li=el('li');li.append(el('span','pill','decisione'),el('span','',x.text),el('span','mut',x.who?'· '+x.who:''));return li})];
+  $('todo').replaceChildren(...(td.length?td:[el('li','mut','Niente in attesa. Tutto sbloccato.')]));
+  $('gt').textContent=K.goals_title||'Obiettivi';
+  $('goals').replaceChildren(...(K.goals||[]).map(g=>{const li=el('li');li.append(el('span','chk'+(g.done?' on':''),g.done?'✓':''),el('span','',g.text),el('span','mut','· '+g.who));return li}));
+
+  $('lock').hidden=true;$('app').hidden=false;site.reveal();
+}
+$('lf').addEventListener('submit',async e=>{
+  e.preventDefault();$('le').textContent='';const pw=$('pw').value;if(!pw)return;
+  try{await open(pw);try{sessionStorage.setItem('tp',pw)}catch(_){}}
+  catch(err){$('le').textContent=err.message==='missing'?'L\'area team non è ancora attiva.':'Password errata.'}
+});
+try{const s=sessionStorage.getItem('tp');if(s){$('pw').value=s;open(s).catch(()=>{try{sessionStorage.removeItem('tp')}catch(_){}})}}catch(_){}
+site.reveal();
+</script><script src="fx.js"></script></body></html>

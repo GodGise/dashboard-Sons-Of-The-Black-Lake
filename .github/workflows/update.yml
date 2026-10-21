@@ -1,0 +1,28 @@
+name: Aggiorna dashboard
+on:
+  schedule: [{cron: "0 */6 * * *"}]
+  workflow_dispatch:
+  push: {branches: [main]}
+permissions: {contents: read, pages: write, id-token: write}
+concurrency: {group: pages, cancel-in-progress: true}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install cryptography
+      - run: python3 scripts/fetch.py
+        env: {GITHUB_TOKEN: "${{ secrets.GNL_TOKEN || secrets.GITHUB_TOKEN }}", TEAM_PASSWORD: "${{ secrets.TEAM_PASSWORD }}"}
+      - run: mkdir _site && cp *.html style.css i18n.js site.js fx.js data.json config.json _site/ && cp -r media _site/ && (cp private.enc notes.enc _site/ 2>/dev/null || true)
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: _site}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: {name: github-pages, url: "${{ steps.d.outputs.page_url }}"}
+    steps:
+      - id: d
+        uses: actions/deploy-pages@v4

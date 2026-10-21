@@ -1,0 +1,54 @@
+{
+  "chapter": [
+    {
+      "name": "Tappa 1",
+      "files": [
+        "8ca60ba87a8ce49c",
+        "3dd3789b20541964",
+        "4e260a9a437adab7",
+        "fc67615b376ad0fb",
+        "f1f2119ed2e52837",
+        "4c18317630e8238a",
+        "ed94879bca1d43ce",
+        "e0b8d227b3d83023",
+        "e8e9e68c97b448ea"
+      ]
+    },
+    {
+      "name": "Tappa 2",
+      "files": [
+        "ed461c81c7a97dfa",
+        "8be21eab58ad0714",
+        "ac16dfa0f0cf7308",
+        "0930538b2c1ca015"
+      ]
+    },
+    {
+      "name": "Tappa 3",
+      "files": [
+        "d3b98c1f624109cf",
+        "2b415d95f19d31b9"
+      ]
+    },
+    {
+      "name": "Tappa 4",
+      "files": [
+        "8c83c5a48b81ba71",
+        "98e17e61e42f574b",
+        "80d5468f3a7d0596",
+        "e4be26d3783e60fb"
+      ]
+    },
+    {
+      "name": "Tappa 5",
+      "files": [
+        "5b0e6ccec1f41452",
+        "170b3601aa657758"
+      ]
+    },
+    {
+      "name": "Modelli 3D",
+      "models": true
+    }
+  ]
+}

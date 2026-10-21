@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="media/logo.svg" type="image/svg+xml">
+<meta name="color-scheme" content="dark">
+<title>Impatto – Obolus Studio</title>
+<link rel="stylesheet" href="style.css"></head><body>
+<nav id="nav"></nav><div id="pb"></div>
+
+<header class="hero">
+  <canvas id="fx"></canvas><div class="blob"></div>
+  <p class="eyebrow">Impatto ambientale</p>
+  <h1><span class="grad">Quanto pesa il nostro gioco.</span></h1>
+  <p class="lead">Una stima, un po' scherzosa, di cosa costa usare l'IA.</p>
+</header>
+
+<main id="app">
+<section id="stima"><div class="rv"><p class="k" style="color:var(--green)">Stima</p><h2>I consumi finora.</h2></div>
+  <div class="tiles rv" id="imp"></div>
+  <div class="card rv" style="margin-top:14px" id="impq"></div>
+  <div class="note rv" id="impn"></div>
+</section>
+</main>
+<footer id="ft"></footer>
+
+<script src="i18n.js"></script>
+<script src="site.js"></script>
+<script>
+const {$,f,el,fx}=site;
+Promise.all([site.data,site.cfg]).then(([D,C])=>{
+  const I=C.impact||{},ac=(D.assistant||{}).commits||0,tok=ac*I.tokens_per_commit,kwh=tok/1000*I.wh_per_1k_tokens/1000,co2=kwh*I.kg_co2_per_kwh,lt=kwh*I.l_water_per_kwh;
+  const it=[['Token consumati',tok>=1e6?fx(tok/1e6,1)+' M':f(Math.round(tok)),'var(--blue)','stima: '+f(ac)+' commit scritti con l\'IA'],
+    ['Energia',fx(kwh,1)+' kWh','var(--orange)','= '+f(Math.round(kwh*1000/I.phone_wh))+' ricariche di telefono'],
+    ['CO₂',fx(co2,1)+' kg','var(--pink)','= '+fx(co2/I.car_kg_per_km,0)+' km in auto'],
+    ['Acqua dolce',fx(lt,1)+' L','var(--teal)','= '+fx(lt/I.glass_l,0)+' bicchieri d\'acqua']];
+  $('imp').replaceChildren(...it.map(([l,v,c,m])=>{const t=site.tile(l,v,c,m,{raw:1});t.querySelector('.n').style.fontSize='34px';return t}));
+  const q=el('div','');q.append(el('h3','','Per capirci meglio'));
+  const li=el('ul','l');[
+   'Un volo New York–Milano emette circa '+f(I.flight_kg)+' kg di CO₂ a passeggero: noi siamo al '+fx(co2/I.flight_kg*100,1)+'% di un volo.',
+   'L\'acqua usata basterebbe per '+fx(lt/I.shower_l,1)+' docce da 8 minuti.'
+  ].forEach(t=>li.append(el('li','',t)));q.append(li);$('impq').replaceChildren(q);
+  $('impn').textContent='Stima a spanne, non misurata: i numeri sono indicativi.';
+  site.reveal();
+}).catch(()=>site.fail());
+</script><script src="fx.js"></script></body></html>
