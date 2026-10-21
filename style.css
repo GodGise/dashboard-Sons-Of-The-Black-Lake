@@ -15,10 +15,10 @@ nav{position:sticky;top:0;z-index:20;height:52px;display:flex;align-items:center
 nav b{font-weight:600;color:var(--fg)}nav a{color:var(--mut)}nav a:hover{color:var(--fg);text-decoration:none}
 /* hero */
 .hero{position:relative;overflow:hidden;text-align:center;padding:84px 20px 72px;isolation:isolate}
-.hero:before,.hero:after{content:"";position:absolute;z-index:-1;border-radius:50%;filter:blur(90px);opacity:.55}
+.hero:before,.hero:after{content:"";position:absolute;z-index:-1;border-radius:50%;opacity:.55}
 .hero:before{width:520px;height:520px;left:-120px;top:-140px;background:radial-gradient(circle,var(--purple),transparent 70%)}
 .hero:after{width:560px;height:560px;right:-140px;top:40px;background:radial-gradient(circle,var(--orange),transparent 70%)}
-.hero .blob{position:absolute;z-index:-1;width:480px;height:480px;left:30%;bottom:-260px;border-radius:50%;filter:blur(100px);opacity:.45;background:radial-gradient(circle,var(--blue),transparent 70%)}
+.hero .blob{position:absolute;z-index:-1;width:480px;height:480px;left:30%;bottom:-260px;border-radius:50%;opacity:.45;background:radial-gradient(circle,var(--blue),transparent 70%)}
 .eyebrow{font-size:15px;font-weight:600;color:var(--orange);letter-spacing:.02em;margin:0 0 10px}
 h1{font-size:clamp(40px,8vw,84px);line-height:1.04;letter-spacing:-.03em;font-weight:700;margin:0 auto;max-width:15ch}
 .lead{font-size:clamp(19px,2.6vw,26px);line-height:1.3;color:var(--mut);max-width:34ch;margin:18px auto 0;font-weight:500}
@@ -101,7 +101,6 @@ nav a.on{color:var(--fg)}
 .hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 @media (prefers-reduced-motion:no-preference){
  .rv.in.tile:hover,.rv.in.pc:hover,.rv.in.ph:hover{transform:translateY(-6px);transition-duration:.25s}
- .tile,.pc,.ph{will-change:transform}
  .eyebrow{animation:glow 3.5s ease-in-out infinite alternate}@keyframes glow{from{opacity:.7}to{opacity:1;text-shadow:0 0 18px rgba(255,159,10,.6)}}
  .cd div{animation:bob 6s ease-in-out infinite}.cd div:nth-child(2){animation-delay:-1.5s}.cd div:nth-child(3){animation-delay:-3s}.cd div:nth-child(4){animation-delay:-4.5s}@keyframes bob{50%{transform:translateY(-6px)}}
  .av{animation:pulse 4s ease-in-out infinite}@keyframes pulse{50%{box-shadow:0 0 0 12px rgba(191,90,242,.12)}}

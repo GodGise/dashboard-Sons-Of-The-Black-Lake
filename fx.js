@@ -17,7 +17,7 @@ if(links.length){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isInt
   links.forEach(a=>{const t=document.querySelector(a.getAttribute('href'));if(t)io.observe(t)})}
 /* braci che salgono nell'intestazione */
 const cv=document.getElementById('fx');
-if(cv&&!reduce){const g=cv.getContext('2d');let W,H,ps=[],run=true,vis=true;
+if(cv&&!reduce&&innerWidth>700&&!matchMedia('(pointer:coarse)').matches){const g=cv.getContext('2d');let W,H,ps=[],run=true,vis=true;
   const size=()=>{const r=cv.getBoundingClientRect(),d=devicePixelRatio||1;W=cv.width=r.width*d;H=cv.height=r.height*d};size();addEventListener('resize',size);
   const mk=(init)=>({x:Math.random()*W,y:init?Math.random()*H:H+10,r:(Math.random()*1.8+.6)*(devicePixelRatio||1),v:(Math.random()*.5+.25)*(devicePixelRatio||1),a:Math.random()*6.28,s:Math.random()*.02+.01,h:[28,18,340,270][Math.floor(Math.random()*4)]});
   const n=Math.min(70,Math.round(innerWidth/16));for(let i=0;i<n;i++)ps.push(mk(true));
