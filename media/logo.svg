@@ -3,7 +3,6 @@
 <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14121b"/><stop offset="1" stop-color="#06060a"/></linearGradient>
 <linearGradient id="g" gradientUnits="userSpaceOnUse" x1="140" y1="80" x2="380" y2="440"><stop offset="0" stop-color="#9ff0ff"/><stop offset=".5" stop-color="#5fb4e8"/><stop offset="1" stop-color="#7a63e0"/></linearGradient>
 <radialGradient id="glow" cx=".5" cy=".5" r=".55"><stop offset="0" stop-color="#4a8de8" stop-opacity=".30"/><stop offset="1" stop-color="#4a8de8" stop-opacity="0"/></radialGradient>
-<filter id="f" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>
 </defs>
 <rect width="512" height="512" rx="116" fill="url(#bg)"/>
 <rect width="512" height="512" rx="116" fill="url(#glow)"/>
@@ -21,5 +20,4 @@
 <path d="M176 160 L256 240 L336 160"/>
 <path d="M256 290 L326 350 L256 410 L186 350 Z" stroke-width="14"/>
 </g>
-<use href="#r" filter="url(#f)" opacity=".55"/>
 </svg>
