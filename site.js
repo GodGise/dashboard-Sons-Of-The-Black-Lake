@@ -18,7 +18,7 @@ S.fx=(n,d)=>n.toLocaleString(S.loc,{maximumFractionDigits:d,minimumFractionDigit
 S.el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
 S.add=(d,n)=>{const x=new Date(d+'T12:00:00Z');x.setUTCDate(x.getUTCDate()+n);return x.toISOString().slice(0,10)};
 S.reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-S.COL=['linear-gradient(135deg,#0a84ff,#bf5af2)','linear-gradient(135deg,#ff9f0a,#ff375f)','linear-gradient(135deg,#30d158,#40c8e0)','linear-gradient(135deg,#bf5af2,#ff375f)'];
+S.COL=['linear-gradient(135deg,#4f9de8,#2a5f9e)','linear-gradient(135deg,#e8962e,#a8531a)','linear-gradient(135deg,#6cbf5a,#2f7a3c)','linear-gradient(135deg,#8b78d6,#4d3f94)'];
 S.count=(node,to)=>{if(S.reduce||to<2){node.textContent=S.f(to);return}const t0=performance.now();(function s(t){const p=Math.min(1,(t-t0)/1100),e=1-Math.pow(1-p,3);node.textContent=S.f(Math.round(to*e));if(p<1)requestAnimationFrame(s)})(t0)};
 S.tile=(l,v,c,m,o)=>{const t=S.el('div','tile'),n=S.el('div','n',o&&o.raw?v:'0');t.style.setProperty('--c',c);t.append(S.el('div','l',l),n,S.el('div','m',m));if(!(o&&o.raw))setTimeout(()=>S.count(n,v||0),200);return t};
 S.cfg=fetch('config.json',{cache:'no-store'}).then(r=>r.json()).catch(()=>({}));
