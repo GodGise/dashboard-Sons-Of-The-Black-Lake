@@ -257,3 +257,9 @@ footer a{color:var(--mut)}footer a:hover{color:var(--fg)}
 .uses li{padding:8px 16px;border-radius:4px;background:linear-gradient(180deg,#232c3a,#121821);border:1px solid rgba(220,169,92,.4);font-weight:600;font-size:15px}
 .support .cta{margin-top:18px}.support .cta2{margin-top:18px}
 .road{margin-top:16px}
+
+/* sfondo animato dell'home: montagne innevate sul lago nero */
+#sky{position:absolute;inset:0;width:100%;height:100%;z-index:-2;pointer-events:none;image-rendering:pixelated;background:#050a12}
+.hero.home{min-height:min(92vh,880px)}
+.hero.home:before,.hero.home .blob{display:none}
+.hero.home:after{background:radial-gradient(ellipse 62% 58% at 50% 46%,rgba(3,6,11,.55),transparent 78%),linear-gradient(180deg,rgba(8,11,16,.35),transparent 18%,transparent 72%,rgba(8,11,16,.96))}
