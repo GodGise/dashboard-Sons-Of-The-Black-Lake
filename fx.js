@@ -148,3 +148,80 @@ function Viewer(canvas){
   return api}
 window.Viewer3D=Viewer;
 })();
+
+/* Sfondo animato dell'intestazione: montagne innevate viste dal lago nero, di notte.
+   Disegnato a bassa risoluzione e ingrandito "a pixel" (stile retro). Luna, stelle che brillano,
+   nuvole lente, nebbia, neve che cade e l'acqua che riflette le montagne con onde e cerchi. */
+(function(){
+const cv=document.getElementById('sky');if(!cv)return;
+const reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,coarse=matchMedia('(pointer:coarse)').matches||innerWidth<700;
+const g=cv.getContext('2d');
+let W,H,hy,sky,mount,full,cl1,cl2,mist,stars,flakes,moon,ripples=[],vis=true,last=0,t0=performance.now(),rid=0;
+const mkc=(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c};
+const rng=seed=>{let s=seed>>>0;return()=>((s=(s*1664525+1013904223)>>>0)/4294967296)};
+function ridge(R,base,amp,step,k){/* profilo a punte, a segmenti netti (low poly) */
+  const ph=[R()*6.3,R()*6.3,R()*6.3],f=[1.3+R()*.6,2.9+R()*.8,6.1+R()*1.2].map(v=>v*k*2*Math.PI/W),pts=[];
+  for(let x=-step;x<=W+step;x+=step){let n=0;n+=1*(1-Math.abs(Math.sin(f[0]*x+ph[0])));n+=.5*(1-Math.abs(Math.sin(f[1]*x+ph[1])));n+=.25*(1-Math.abs(Math.sin(f[2]*x+ph[2])));n=n/1.75+(R()-.5)*.07;pts.push([x,base-amp*n])}
+  return pts}
+function mountain(c,R,pts,base,col,snowLine){
+  for(let i=0;i<pts.length-1;i++){const [x0,y0]=pts[i],[x1,y1]=pts[i+1],lit=y1>y0;
+    c.fillStyle=lit?col.lit:col.shade;c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.lineTo(x1,base);c.lineTo(x0,base);c.fill();
+    if(snowLine!=null&&Math.min(y0,y1)<snowLine){const s0=Math.max(y0,snowLine+Math.sin(x0*.9)*4+R()*4),s1=Math.max(y1,snowLine+Math.sin(x1*.9)*4+R()*4);
+      c.fillStyle=lit?col.snowLit:col.snowShade;c.beginPath();c.moveTo(x0,y0);c.lineTo(x1,y1);c.lineTo(x1,s1);c.lineTo(x0,s0);c.fill()}}}
+function haze(c,y0,y1,a){const gr=c.createLinearGradient(0,y0,0,y1);gr.addColorStop(0,'rgba(43,69,102,0)');gr.addColorStop(1,'rgba(43,69,102,'+a+')');c.fillStyle=gr;c.fillRect(0,y0,W,y1-y0)}
+function clouds(R,n,y0,y1,alpha){const c=mkc(W,hy),x=c.getContext('2d');
+  for(let i=0;i<n;i++){const cx=R()*W,cy=y0+R()*(y1-y0),rx=W*(.06+R()*.12),ry=2+R()*5;
+    for(const o of [-W,0,W]){x.fillStyle='rgba(6,12,22,'+alpha+')';x.beginPath();x.ellipse(cx+o,cy,rx,ry,0,0,7);x.fill();
+      x.fillStyle='rgba(140,168,205,.16)';x.beginPath();x.ellipse(cx+o+rx*.15,cy-ry*.55,rx*.8,ry*.35,0,0,7);x.fill()}}
+  return c}
+function setup(){
+  const r=cv.parentElement.getBoundingClientRect();W=coarse?240:380;H=Math.max(150,Math.round(W*r.height/Math.max(1,r.width)));cv.width=W;cv.height=H;hy=Math.round(H*.62);
+  const R=rng(11);
+  sky=mkc(W,hy);let s=sky.getContext('2d');
+  let gr=s.createLinearGradient(0,0,0,hy);gr.addColorStop(0,'#03060c');gr.addColorStop(.55,'#0a1424');gr.addColorStop(1,'#1d3552');s.fillStyle=gr;s.fillRect(0,0,W,hy);
+  const mr=Math.max(6,Math.round(W*.03));moon={x:Math.round(W*.74),y:Math.round(hy*.3),r:mr};
+  const hl=s.createRadialGradient(moon.x,moon.y,mr*.5,moon.x,moon.y,mr*10);hl.addColorStop(0,'rgba(170,200,235,.4)');hl.addColorStop(1,'rgba(170,200,235,0)');s.fillStyle=hl;s.fillRect(0,0,W,hy);
+  s.fillStyle='#e9eff8';s.beginPath();s.arc(moon.x,moon.y,mr,0,7);s.fill();
+  s.fillStyle='rgba(120,140,170,.38)';[[-.3,-.2,.28],[.25,.15,.22],[-.1,.4,.16],[.3,-.35,.14]].forEach(([a,b,c])=>{s.beginPath();s.arc(moon.x+a*mr,moon.y+b*mr,c*mr,0,7);s.fill()});
+  /* montagne: lontane con neve, poi più scure, infine la riva con i pini */
+  mount=mkc(W,hy);const m=mount.getContext('2d'),st=Math.max(7,Math.round(W/46));
+  mountain(m,R,ridge(R,hy*.84,hy*.6,st,1),hy,{lit:'#2b4466',shade:'#16263c',snowLit:'#cddcee',snowShade:'#7388a6'},hy*.5);haze(m,hy*.4,hy,.3);
+  mountain(m,R,ridge(R,hy*.93,hy*.4,st,1.2),hy,{lit:'#192b43',shade:'#0d1829',snowLit:'#a4b7ce',snowShade:'#4d607a'},hy*.66);haze(m,hy*.55,hy,.34);
+  const near=ridge(R,hy*1.0,hy*.2,Math.round(st*.8),.8);mountain(m,R,near,hy,{lit:'#0b131f',shade:'#060b13'},null);
+  m.fillStyle='#04080e';near.forEach(([x,y])=>{if(R()<.75){const h=hy*.05+R()*hy*.07,w=h*.38;m.beginPath();m.moveTo(x,y-h);m.lineTo(x+w,y+2);m.lineTo(x-w,y+2);m.fill()}});
+  full=mkc(W,hy);const f=full.getContext('2d');f.drawImage(sky,0,0);f.drawImage(mount,0,0);
+  cl1=clouds(rng(3),7,hy*.1,hy*.38,.55);cl2=clouds(rng(5),6,hy*.28,hy*.5,.7);
+  /* nebbia: bande morbide che scorrono */
+  mist=mkc(W,28);const q=mist.getContext('2d'),R2=rng(9);
+  for(let i=0;i<9;i++){const cx=R2()*W,cy=14+(R2()-.5)*8,rx=W*(.1+R2()*.14);for(const o of [-W,0,W]){q.save();q.translate(cx+o,cy);q.scale(1,.16);const rg=q.createRadialGradient(0,0,0,0,0,rx);rg.addColorStop(0,'rgba(150,178,212,.28)');rg.addColorStop(1,'rgba(150,178,212,0)');q.fillStyle=rg;q.beginPath();q.arc(0,0,rx,0,7);q.fill();q.restore()}}
+  const R3=rng(21);stars=[];for(let i=0;i<Math.round(W*.42);i++)stars.push({x:Math.round(R3()*W),y:Math.round(R3()*hy*.72),p:R3()*6.3,s:.6+R3()*2.2,b:R3()<.12});
+  flakes=[];for(let i=0;i<Math.round(W*.2);i++)flakes.push({x:R3()*W,y:R3()*H,v:6+R3()*14,p:R3()*6.3,a:.35+R3()*.5})}
+function wrapDraw(img,ox,y,a){g.globalAlpha=a;const x=-(((ox%W)+W)%W);g.drawImage(img,x,y);g.drawImage(img,x+W,y);g.globalAlpha=1}
+function draw(t,dt){
+  g.clearRect(0,0,W,H);g.drawImage(sky,0,0);
+  for(const s of stars){const a=(.3+.7*(.5+.5*Math.sin(t*s.s+s.p)))*(s.b?1:.7);g.fillStyle='rgba('+(s.b?'255,244,220':'200,220,255')+','+a.toFixed(2)+')';g.fillRect(s.x,s.y,s.b?2:1,1)}
+  wrapDraw(cl1,t*1.6,0,1);wrapDraw(cl2,t*3.2,0,1);
+  g.drawImage(mount,0,0);
+  wrapDraw(mist,t*2.4,hy-20,.9);
+  /* lago: riflesso capovolto con onde, poi scurito */
+  const wh=H-hy;
+  for(let d=0;d<wh;d++){const sy=hy-1-d;if(sy<0)break;g.globalAlpha=.62*(1-d/wh*.75);g.drawImage(full,0,sy,W,1,Math.round(Math.sin(d*.5+t*1.5)*(.7+d*.05)),hy+d,W,1)}
+  g.globalAlpha=1;const wg=g.createLinearGradient(0,hy,0,H);wg.addColorStop(0,'rgba(5,11,20,.42)');wg.addColorStop(1,'rgba(1,3,6,.9)');g.fillStyle=wg;g.fillRect(0,hy,W,wh);
+  /* colonna di luce della luna sull'acqua, a tratti */
+  for(let d=2;d<wh;d+=2){const k=d/wh,w=moon.r*(1+k*2.4)*(.3+.7*Math.max(0,Math.sin(d*.8-t*2.1)));if(w<1)continue;g.fillStyle='rgba(205,224,248,'+(.4*(1-k*.8)).toFixed(2)+')';g.fillRect(Math.round(moon.x+Math.sin(d*.45+t*.9)*2-w/2),hy+d,Math.round(w),1)}
+  /* cerchi sull'acqua ogni tanto */
+  if(!ripples.length||t-ripples[ripples.length-1].t>3.2+Math.random()*3)ripples.push({x:W*(.1+Math.random()*.8),y:hy+wh*(.25+Math.random()*.65),t});
+  ripples=ripples.filter(p=>t-p.t<3);g.lineWidth=1;
+  for(const p of ripples){const a=t-p.t,r=a*7;if(a<=0)continue;g.strokeStyle='rgba(175,205,235,'+(.32*(1-a/3)).toFixed(2)+')';g.beginPath();g.ellipse(p.x,p.y,r,r*.22,0,0,7);g.stroke();if(a>.5){g.beginPath();g.ellipse(p.x,p.y,(a-.5)*7,(a-.5)*1.5,0,0,7);g.stroke()}}
+  wrapDraw(mist,-t*3.4,hy-4,.7);
+  /* neve */
+  for(const f of flakes){f.y+=f.v*dt;f.x+=Math.sin(t*.7+f.p)*7*dt;if(f.y>H){f.y=-2;f.x=Math.random()*W}if(f.x<0)f.x+=W;if(f.x>W)f.x-=W;g.fillStyle='rgba(225,236,250,'+f.a.toFixed(2)+')';g.fillRect(Math.round(f.x),Math.round(f.y),1,1)}}
+function loop(now){
+  rid=requestAnimationFrame(loop);
+  if(!vis||document.hidden)return;
+  const gap=1000/(coarse?15:24);if(now-last<gap)return;const dt=Math.min(.1,(now-last)/1000);last=now;draw((now-t0)/1000,dt)}
+setup();draw(4,0);
+if(!reduce){rid=requestAnimationFrame(loop)}
+new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(cv);
+let rs=0;addEventListener('resize',()=>{clearTimeout(rs);rs=setTimeout(()=>{setup();draw((performance.now()-t0)/1000,0)},200)});
+})();
