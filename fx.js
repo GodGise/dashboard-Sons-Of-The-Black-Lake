@@ -147,6 +147,12 @@ function Viewer(canvas){
   requestAnimationFrame(frame);
   return api}
 window.Viewer3D=Viewer;
+/* modelli definitivi: media/models/models.json (creato con tools/glb2model.py), sostituiscono quelli provvisori con la stessa chiave */
+Viewer.load=async function(){try{const r=await fetch('media/models/models.json',{cache:'no-cache'});if(!r.ok)return;const j=await r.json();
+  for(const m of (j&&j.models)||[]){if(!/^[a-z0-9-]{1,24}$/.test(m.key||'')||!Array.isArray(m.faces)||!m.faces.length)continue;
+    const fs=m.faces.filter(f=>Array.isArray(f.p)&&f.p.length>=3&&Array.isArray(f.c));
+    const o={key:m.key,name:String(m.name||m.key).slice(0,40),desc:String(m.desc||'').slice(0,160),build:()=>fs.map(f=>({p:f.p.map(v=>v.slice()),c:f.c.slice(),g:!!f.g}))};
+    const i=MODELS.findIndex(x=>x.key===m.key);if(i>=0)MODELS[i]=o;else MODELS.push(o)}}catch(e){}};
 })();
 
 /* Sfondo animato dell'intestazione: montagne innevate viste dal lago nero, di notte.
@@ -175,7 +181,7 @@ function clouds(R,n,y0,y1,alpha){const c=mkc(W,hy),x=c.getContext('2d');
       x.fillStyle='rgba(140,168,205,.16)';x.beginPath();x.ellipse(cx+o+rx*.15,cy-ry*.55,rx*.8,ry*.35,0,0,7);x.fill()}}
   return c}
 function setup(){
-  const r=cv.parentElement.getBoundingClientRect();W=coarse?240:380;H=Math.max(150,Math.round(W*r.height/Math.max(1,r.width)));cv.width=W;cv.height=H;hy=Math.round(H*.62);
+  const r=cv.parentElement.getBoundingClientRect();W=coarse?240:380;H=Math.max(150,Math.round(W*r.height*1.18/Math.max(1,r.width)));cv.width=W;cv.height=H;hy=Math.round(H*.62);
   const R=rng(11);
   sky=mkc(W,hy);let s=sky.getContext('2d');
   let gr=s.createLinearGradient(0,0,0,hy);gr.addColorStop(0,'#03060c');gr.addColorStop(.55,'#0a1424');gr.addColorStop(1,'#1d3552');s.fillStyle=gr;s.fillRect(0,0,W,hy);
@@ -223,5 +229,16 @@ function loop(now){
 setup();draw(4,0);
 if(!reduce){rid=requestAnimationFrame(loop)}
 new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(cv);
+if(!reduce){let pq=0;addEventListener('scroll',()=>{if(pq)return;pq=requestAnimationFrame(()=>{pq=0;const y=scrollY;if(y<innerHeight*1.3)cv.style.transform='translate3d(0,'+(y*.28).toFixed(1)+'px,0)'})},{passive:true})}
 let rs=0;addEventListener('resize',()=>{clearTimeout(rs);rs=setTimeout(()=>{setup();draw((performance.now()-t0)/1000,0)},200)});
 })();
+
+/* torna su */
+(function(){const b=document.createElement('button');b.type='button';b.className='up';b.textContent='\u2191';b.setAttribute('aria-label','Torna su');
+  b.onclick=()=>scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});document.body.append(b);
+  let q=0;addEventListener('scroll',()=>{if(q)return;q=requestAnimationFrame(()=>{q=0;b.classList.toggle('on',scrollY>900)})},{passive:true})})();
+window.lightbox=function(src,cap){const o=document.createElement('div');o.className='lb';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');
+  const im=document.createElement('img');im.src=src;im.alt=cap||'';const x=document.createElement('button');x.type='button';x.textContent='\u00d7';x.setAttribute('aria-label','Chiudi');
+  const close=()=>{o.remove();document.removeEventListener('keydown',k);if(window.__lbf)window.__lbf.focus()},k=e=>{if(e.key==='Escape')close()};
+  x.onclick=close;o.onclick=e=>{if(e.target!==im)close()};o.append(im,x);if(cap){const p=document.createElement('p');p.textContent=cap;o.append(p)}
+  document.addEventListener('keydown',k);document.body.append(o);x.focus()};

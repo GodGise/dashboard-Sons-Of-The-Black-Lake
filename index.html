@@ -4,10 +4,16 @@
 <link rel="icon" href="media/logo.svg" type="image/svg+xml">
 <meta name="color-scheme" content="dark">
 <meta name="description" content="Sons of the Black Lake: un dark fantasy open world da giocare da soli o in tre. Un gioco di Obolus Studio.">
+<meta name="theme-color" content="#080b10">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://godgise.github.io/dashboard-Sons-Of-The-Black-Lake/media/og.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:title" content="Sons of the Black Lake – Obolus Studio">
 <meta property="og:description" content="Un dark fantasy open world da giocare da soli o in tre. Seguici mentre lo costruiamo.">
 <title>Sons of the Black Lake – Obolus Studio</title>
 <link rel="stylesheet" href="style.css"></head><body>
+<a class="skip" href="#app">Vai al contenuto</a>
 <nav id="nav"></nav><div id="pb"></div>
 
 <header class="hero home">
@@ -20,9 +26,10 @@
   <div class="cdl" id="cdl"></div>
   <div><a class="cta warm" id="hs" href="#sostieni">Sostienici</a><a class="cta2" href="#gioco">Scopri il gioco</a></div>
 </header>
+<div class="facts" id="facts"><div><span>Genere</span><b>Dark fantasy</b></div><div><span>Mondo</span><b>Open world</b></div><div><span>Giocatori</span><b>1 – 3 in co-op</b></div><div><span>Piattaforma</span><b>PC · Steam</b></div><div><span>Demo</span><b id="fd">—</b></div></div>
 
 <main id="app">
-<section id="gioco"><div class="rv"><p class="k grad">Il gioco</p><h2>Un'avventura dark fantasy.</h2><p class="sub">Un open world da vivere da soli o in compagnia, per PC su Steam.</p></div>
+<section id="gioco" class="band-a"><div class="rv"><p class="k grad">Il gioco</p><h2>Un'avventura dark fantasy.</h2><p class="sub">Un open world da vivere da soli o in compagnia, per PC su Steam.</p></div>
   <div class="feat">
     <div class="card"><div class="ic" style="--c:var(--blue)"><svg viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(45 24 24)"><polygon fill="currentColor" points="24,2 28,9 28,30 24,30"/><polygon fill="currentColor" fill-opacity=".55" points="24,2 20,9 20,30 24,30"/><polygon fill="currentColor" points="12,30 36,30 34,34 14,34"/><polygon fill="currentColor" fill-opacity=".55" points="24,34 14,34 12,30 24,30" fill-opacity=".3"/><polygon fill="currentColor" fill-opacity=".55" points="21.5,34 26.5,34 26.5,41 21.5,41"/><polygon fill="currentColor" points="24,40 28,43.5 24,47 20,43.5"/></g></svg></div><h3>Combattimento</h3><p>Un sistema di combattimento completo.</p></div>
     <div class="card"><div class="ic" style="--c:var(--purple)"><svg viewBox="0 0 48 48" aria-hidden="true"><polygon fill="currentColor" points="24,3 41,9 41,25 24,45"/><polygon fill="currentColor" fill-opacity=".55" points="24,3 7,9 7,25 24,45"/><polygon fill="#000" fill-opacity=".35" points="24,13 31,24 24,35 17,24"/><polygon fill="#fff" fill-opacity=".85" points="24,17 28,24 24,31 20,24"/></svg></div><h3>Classi</h3><p>Più classi, ognuna con il suo stile.</p></div>
@@ -33,7 +40,7 @@
   </div>
 </section>
 
-<section id="modelli"><div class="rv"><p class="k" style="color:var(--teal)">In 3D</p><h2>Guardali da vicino.</h2><p class="sub">Armi e luoghi del gioco, in low poly. Trascina per ruotarli.</p></div>
+<section id="modelli" class="band-b"><div class="rv"><p class="k" style="color:var(--teal)">In 3D</p><h2>Guardali da vicino.</h2><p class="sub">Armi e luoghi del gioco, in low poly. Trascina per ruotarli.</p></div>
   <div class="card v3 rv">
     <div class="v3-stage"><canvas id="v3c" tabindex="0" aria-label="Modello 3D"></canvas>
       <div class="v3-zoom"><button type="button" id="zi" aria-label="+">+</button><button type="button" id="zo" aria-label="−">−</button></div></div>
@@ -43,7 +50,7 @@
   <p class="note">Modelli di anteprima: quelli definitivi sono in arrivo.</p>
 </section>
 
-<section id="classi"><div class="rv"><p class="k" style="color:var(--purple)">Classi</p><h2>Scegli come giocare.</h2><p class="sub">Tre classi, tre stili.</p></div>
+<section id="classi" class="band-a"><div class="rv"><p class="k" style="color:var(--purple)">Classi</p><h2>Scegli come giocare.</h2><p class="sub">Tre classi, tre stili.</p></div>
   <div class="feat" id="cls">
     <div class="card"><h3>Guerriero</h3><p>Più vita e più forza: incassa e colpisce duro.</p><button type="button" class="cta2 sm" data-m="spada">Guarda l'arma</button></div>
     <div class="card"><h3>Ladro</h3><p>Arco e pugnale: veloce e preciso.</p><button type="button" class="cta2 sm" data-m="arco">Guarda l'arma</button></div>
@@ -51,21 +58,26 @@
   </div>
 </section>
 
-<section id="storia"><div class="rv"><p class="k" style="color:var(--pink)">La storia</p><h2>Il primo capitolo.</h2><p class="sub">Tutto comincia a Villaggio Lago Nero, un piccolo borgo affacciato su acque scure. Qui vive il protagonista, tra vicini, mestieri e giornate che sembrano tutte uguali. Ma questo è un mondo dark fantasy: la calma non dura per sempre. Il primo capitolo ti presenta il suo passato e ti guida, con calma, dentro il gioco. Sarà la nostra demo su Steam.</p></div></section>
+<section id="storia" class="band-c"><div class="rv"><p class="k" style="color:var(--pink)">La storia</p><h2>Il primo capitolo.</h2><p class="sub">Tutto comincia a Villaggio Lago Nero, un piccolo borgo affacciato su acque scure. Qui vive il protagonista, tra vicini, mestieri e giornate che sembrano tutte uguali. Ma questo è un mondo dark fantasy: la calma non dura per sempre. Il primo capitolo ti presenta il suo passato e ti guida, con calma, dentro il gioco. Sarà la nostra demo su Steam.</p></div></section>
 
-<section id="trailer" hidden><div class="rv"><p class="k grad">Trailer</p><h2>Guardalo in azione.</h2></div><div class="vid rv" id="vid"></div></section>
+<section id="trailer" class="band-b" hidden><div class="rv"><p class="k grad">Trailer</p><h2>Guardalo in azione.</h2></div><div class="vid rv" id="vid"></div></section>
 
-<section id="galleria" hidden><div class="rv"><p class="k" style="color:var(--teal)">Galleria</p><h2>Il mondo prende forma.</h2></div><div class="gal rv" id="gal"></div></section>
+<section id="galleria" class="band-a" hidden><div class="rv"><p class="k" style="color:var(--teal)">Galleria</p><h2>Il mondo prende forma.</h2></div><div class="gal rv" id="gal"></div></section>
 
-<section id="progressi"><div class="rv"><p class="k" style="color:var(--green)">A che punto siamo</p><h2>Si costruisce ogni giorno.</h2><p class="sub">Lo stato del capitolo 1.</p></div>
+<section id="progressi" class="band-b"><div class="rv"><p class="k" style="color:var(--green)">A che punto siamo</p><h2>Si costruisce ogni giorno.</h2><p class="sub">Lo stato del capitolo 1.</p></div>
   <div class="card chap rv" id="chap"><div class="ring"><svg width="180" height="180" viewBox="0 0 180 180"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6c274"/><stop offset=".5" stop-color="#e8962e"/><stop offset="1" stop-color="#c9691f"/></linearGradient></defs><circle cx="90" cy="90" r="76" fill="none" stroke="var(--line)" stroke-width="14"/><circle id="rg" cx="90" cy="90" r="76" fill="none" stroke="url(#gr)" stroke-width="14" stroke-linecap="butt" stroke-dasharray="477.5" stroke-dashoffset="477.5" style="transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.2,1)"/></svg><div class="t"><b id="cp">—</b><span>tappe pronte</span></div></div>
   <div><ol class="tl" id="cl"></ol><div class="note" id="cn"></div></div></div>
   <div class="road rv" id="road"></div>
 </section>
 
-<section id="team"><div class="rv"><p class="k" style="color:var(--orange)">Il team</p><h2>Tre persone, un gioco.</h2></div><div class="ppl rv" id="ppl"></div></section>
+<section id="team" class="band-a"><div class="rv"><p class="k" style="color:var(--orange)">Il team</p><h2>Tre persone, un gioco.</h2></div><div class="ppl rv" id="ppl"></div></section>
 
-<section id="sostieni"><div class="card support rv"><p class="k grad">Sostienici</p><h2>Aiutaci a finire il gioco.</h2><p class="sub" id="dt"></p>
+<section id="press" class="band-c"><div class="rv"><p class="k" style="color:var(--teal)">Press kit</p><h2>Per stampa e creator.</h2><p class="sub">Tutto quello che serve per parlare del gioco: scheda tecnica e materiali da scaricare.</p></div>
+  <div class="press rv"><div class="card"><dl class="fs"><dt>Titolo</dt><dd>Sons of the Black Lake</dd><dt>Sviluppatore</dt><dd>Obolus Studio</dd><dt>Genere</dt><dd>Dark fantasy open world</dd><dt>Giocatori</dt><dd>Singolo o co-op, fino a 3</dd><dt>Piattaforma</dt><dd>PC (Windows), su Steam</dd><dt>Demo</dt><dd id="pd">—</dd><dt>Lingue</dt><dd>Otto lingue</dd><dt>Contatti</dt><dd id="pc">Presto disponibile</dd></dl></div>
+  <div class="card assets"><img src="media/logo-512.png" alt="Logo di Obolus Studio" width="120" height="120"><h3>Logo</h3><p>Il logo dello studio, pronto da usare.</p><div><a class="cta2 sm" href="media/logo.svg" download>Scarica SVG</a><a class="cta2 sm" href="media/logo-512.png" download>Scarica PNG</a></div></div></div>
+</section>
+
+<section id="sostieni" class="band-d"><div class="card support rv"><p class="k grad">Sostienici</p><h2>Aiutaci a finire il gioco.</h2><p class="sub" id="dt"></p>
   <p class="k" style="color:var(--bronze-hi);margin-top:26px">Dove vanno le donazioni</p>
   <ul class="uses"><li>Pubblicare il gioco su Steam</li><li>Musiche e suoni</li><li>Strumenti e abbonamenti di lavoro</li></ul>
   <p class="mut">Anche una piccola donazione conta.</p>
@@ -78,9 +90,11 @@
 <script src="fx.js"></script>
 <script>
 const {$,el}=site;
-Promise.all([site.cfg,site.data.catch(()=>({}))]).then(([C,D])=>{
+Promise.all([site.cfg,site.data.catch(()=>({})),Viewer3D.load()]).then(([C,D])=>{
   if(C.tagline)$('tag').textContent=C.tagline;
   site.countdown(C,$('cd'),$('cdl'));
+  if(C.launch_date){const d=new Date(C.launch_date+'T12:00:00').toLocaleDateString(site.loc,{dateStyle:'long'});$('fd').textContent=d;$('pd').textContent=d}
+  if(C.contact_email&&/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(C.contact_email)){$('pc').replaceChildren(Object.assign(el('a'),{href:'mailto:'+C.contact_email,textContent:C.contact_email}))}
   /* visore 3D */
   const V=Viewer3D($('v3c')),tabs=$('v3t');
   tabs.replaceChildren(...V.models.map(m=>{const b=el('button','cta2 sm',m.name);b.type='button';b.dataset.m=m.key;b.onclick=()=>V.select(m.key);return b}));
@@ -91,7 +105,7 @@ Promise.all([site.cfg,site.data.catch(()=>({}))]).then(([C,D])=>{
   if(/^[\w-]{11}$/.test(C.trailer||'')){const i=el('iframe');i.src='https://www.youtube-nocookie.com/embed/'+C.trailer;i.title='Trailer';i.allow='accelerometer;encrypted-media;picture-in-picture;fullscreen';i.allowFullscreen=true;i.loading='lazy';$('vid').replaceChildren(i);$('trailer').hidden=false}
   /* galleria (solo se ci sono immagini) */
   const gl=(C.gallery||[]).map(g=>typeof g==='string'?{src:g}:g).filter(g=>/^media\/[\w\-./]+\.(png|jpe?g|webp|gif|mp4|webm)$/i.test(g.src||''));
-  if(gl.length){$('galleria').hidden=false;$('gal').replaceChildren(...gl.map(g=>{const fg=el('figure'),v=/\.(mp4|webm)$/i.test(g.src),m=el(v?'video':'img');m.src=g.src;if(v){m.controls=true;m.preload='metadata';m.playsInline=true}else{m.alt=g.caption||'Immagine del gioco';m.loading='lazy'}fg.append(m);if(g.caption)fg.append(el('figcaption','',g.caption));return fg}))}
+  if(gl.length){$('galleria').hidden=false;$('gal').replaceChildren(...gl.map(g=>{const fg=el('figure'),v=/\.(mp4|webm)$/i.test(g.src),m=el(v?'video':'img');m.src=g.src;if(v){m.controls=true;m.preload='metadata';m.playsInline=true}else{m.alt=g.caption||'Immagine del gioco';m.loading='lazy'}if(!v){m.tabIndex=0;const op=()=>{window.__lbf=m;lightbox(g.src,g.caption)};m.onclick=op;m.onkeydown=e=>{if(e.key==='Enter')op()}}fg.append(m);if(g.caption)fg.append(el('figcaption','',g.caption));return fg}))}
   /* progressi */
   const ch=D.chapter||[],dn=ch.filter(x=>x.status==='done').length,SL={done:'✓',doing:'…',todo:''};
   if(ch.length){
