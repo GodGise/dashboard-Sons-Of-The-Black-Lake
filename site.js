@@ -44,9 +44,10 @@ if(nav){
   const im=document.createElement('img');im.src='media/logo.svg';im.alt='';im.width=26;im.height=26;
   brand.append(im,Object.assign(document.createElement('b'),{textContent:'Obolus Studio'}));
   nav.append(brand);
-  [['index.html#gioco','Il gioco','index.html'],['progressi.html','Progressi','progressi.html'],['impatto.html','Impatto','impatto.html'],['chi-siamo.html','Chi siamo','chi-siamo.html']].forEach(([h,t,p])=>{
-    const a=document.createElement('a');a.href=h;a.textContent=S.t(t);if(p===page&&p!=='index.html')a.className='on';nav.append(a)});
-  const g=document.createElement('a');g.href='index.html#sostieni';g.className='go';g.textContent=S.t('Sostienici');nav.append(g);
+  const home=page==='index.html'||page==='',H=id=>(home?'':'index.html')+'#'+id;
+  [[H('gioco'),'Il gioco'],[H('modelli'),'In 3D'],[H('storia'),'La storia'],[H('progressi'),'Progressi'],[H('team'),'Il team']].forEach(([h,t])=>{
+    const a=document.createElement('a');a.href=h;a.textContent=S.t(t);nav.append(a)});
+  const g=document.createElement('a');g.href=H('sostieni');g.className='go';g.textContent=S.t('Sostienici');nav.append(g);
   const sel=document.createElement('select');sel.className='lang';sel.setAttribute('aria-label','Language');SUP.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=NAMES[c];if(c===S.lang)o.selected=true;sel.append(o)});sel.onchange=()=>S.setLang(sel.value);nav.append(sel);
 }
 const ft=document.getElementById('ft');

@@ -22,10 +22,6 @@
 </header>
 
 <main id="app">
-<section id="trailer"><div class="rv"><p class="k grad">Trailer</p><h2>Guardalo in azione.</h2></div>
-  <div class="vid rv" id="vid"><div><div class="play"></div><p>Il trailer arriva presto.</p></div></div>
-</section>
-
 <section id="gioco"><div class="rv"><p class="k grad">Il gioco</p><h2>Un'avventura dark fantasy.</h2><p class="sub">Un open world da vivere da soli o in compagnia, per PC su Steam.</p></div>
   <div class="feat">
     <div class="card"><div class="ic" style="--c:var(--blue)"><svg viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(45 24 24)"><polygon fill="currentColor" points="24,2 28,9 28,30 24,30"/><polygon fill="currentColor" fill-opacity=".55" points="24,2 20,9 20,30 24,30"/><polygon fill="currentColor" points="12,30 36,30 34,34 14,34"/><polygon fill="currentColor" fill-opacity=".55" points="24,34 14,34 12,30 24,30" fill-opacity=".3"/><polygon fill="currentColor" fill-opacity=".55" points="21.5,34 26.5,34 26.5,41 21.5,41"/><polygon fill="currentColor" points="24,40 28,43.5 24,47 20,43.5"/></g></svg></div><h3>Combattimento</h3><p>Un sistema di combattimento completo.</p></div>
@@ -37,50 +33,79 @@
   </div>
 </section>
 
-<section id="storia"><div class="rv"><p class="k" style="color:var(--pink)">La storia</p><h2>Il primo capitolo.</h2><p class="sub">Tutto comincia a Villaggio Lago Nero, un piccolo borgo affacciato su acque scure. Qui vive il protagonista, tra vicini, mestieri e giornate che sembrano tutte uguali. Ma questo è un mondo dark fantasy: la calma non dura per sempre. Il primo capitolo ti presenta il suo passato e ti guida, con calma, dentro il gioco. Sarà la nostra demo su Steam.</p></div></section>
-
-<section id="galleria"><div class="rv"><p class="k" style="color:var(--teal)">Galleria</p><h2>Il mondo prende forma.</h2></div><div class="gal rv" id="gal"></div></section>
-
-<section id="progressi"><div class="rv"><p class="k" style="color:var(--green)">A che punto siamo</p><h2>Si costruisce ogni giorno.</h2><p class="sub">Lo stato del capitolo 1.</p></div>
-  <div class="card chap rv"><div class="ring"><svg width="180" height="180" viewBox="0 0 180 180"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6c274"/><stop offset=".5" stop-color="#e8962e"/><stop offset="1" stop-color="#c9691f"/></linearGradient></defs><circle cx="90" cy="90" r="76" fill="none" stroke="var(--line)" stroke-width="14"/><circle id="rg" cx="90" cy="90" r="76" fill="none" stroke="url(#gr)" stroke-width="14" stroke-linecap="butt" stroke-dasharray="477.5" stroke-dashoffset="477.5" style="transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.2,1)"/></svg><div class="t"><b id="cp">—</b><span>tappe pronte</span></div></div>
-  <div><ol class="tl" id="cl"></ol><div class="note" id="cn"></div></div></div>
-  <div class="mini rv" id="nums"></div>
-  <a class="more" href="progressi.html">Tutti i numeri e la roadmap →</a>
+<section id="modelli"><div class="rv"><p class="k" style="color:var(--teal)">In 3D</p><h2>Guardali da vicino.</h2><p class="sub">Armi e luoghi del gioco, in low poly. Trascina per ruotarli.</p></div>
+  <div class="card v3 rv">
+    <div class="v3-stage"><canvas id="v3c" tabindex="0" aria-label="Modello 3D"></canvas>
+      <div class="v3-zoom"><button type="button" id="zi" aria-label="+">+</button><button type="button" id="zo" aria-label="−">−</button></div></div>
+    <div class="v3-info"><h3 id="v3n"></h3><p id="v3d"></p><p class="mut" id="v3h">Trascina per ruotare. Usa + e − per ingrandire.</p></div>
+    <div class="v3-tabs" id="v3t"></div>
+  </div>
+  <p class="note">Modelli di anteprima: quelli definitivi sono in arrivo.</p>
 </section>
 
-<section id="team"><div class="rv"><p class="k" style="color:var(--orange)">Il team</p><h2>Tre persone, un gioco.</h2></div><div class="ppl rv" id="ppl"></div><a class="more" href="chi-siamo.html">Conosci il team →</a></section>
+<section id="classi"><div class="rv"><p class="k" style="color:var(--purple)">Classi</p><h2>Scegli come giocare.</h2><p class="sub">Tre classi, tre stili.</p></div>
+  <div class="feat" id="cls">
+    <div class="card"><h3>Guerriero</h3><p>Più vita e più forza: incassa e colpisce duro.</p><button type="button" class="cta2 sm" data-m="spada">Guarda l'arma</button></div>
+    <div class="card"><h3>Ladro</h3><p>Arco e pugnale: veloce e preciso.</p><button type="button" class="cta2 sm" data-m="arco">Guarda l'arma</button></div>
+    <div class="card"><h3>Stregone</h3><p>Attacchi a distanza ed evocazioni.</p><button type="button" class="cta2 sm" data-m="bastone">Guarda l'arma</button></div>
+  </div>
+</section>
 
-<section id="sostieni"><div class="card support rv"><p class="k grad">Sostienici</p><h2>Aiutaci a finire il gioco.</h2><p class="sub" id="dt"></p><a class="cta warm" id="db" href="#">Sostienici</a></div></section>
+<section id="storia"><div class="rv"><p class="k" style="color:var(--pink)">La storia</p><h2>Il primo capitolo.</h2><p class="sub">Tutto comincia a Villaggio Lago Nero, un piccolo borgo affacciato su acque scure. Qui vive il protagonista, tra vicini, mestieri e giornate che sembrano tutte uguali. Ma questo è un mondo dark fantasy: la calma non dura per sempre. Il primo capitolo ti presenta il suo passato e ti guida, con calma, dentro il gioco. Sarà la nostra demo su Steam.</p></div></section>
+
+<section id="trailer" hidden><div class="rv"><p class="k grad">Trailer</p><h2>Guardalo in azione.</h2></div><div class="vid rv" id="vid"></div></section>
+
+<section id="galleria" hidden><div class="rv"><p class="k" style="color:var(--teal)">Galleria</p><h2>Il mondo prende forma.</h2></div><div class="gal rv" id="gal"></div></section>
+
+<section id="progressi"><div class="rv"><p class="k" style="color:var(--green)">A che punto siamo</p><h2>Si costruisce ogni giorno.</h2><p class="sub">Lo stato del capitolo 1.</p></div>
+  <div class="card chap rv" id="chap"><div class="ring"><svg width="180" height="180" viewBox="0 0 180 180"><defs><linearGradient id="gr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6c274"/><stop offset=".5" stop-color="#e8962e"/><stop offset="1" stop-color="#c9691f"/></linearGradient></defs><circle cx="90" cy="90" r="76" fill="none" stroke="var(--line)" stroke-width="14"/><circle id="rg" cx="90" cy="90" r="76" fill="none" stroke="url(#gr)" stroke-width="14" stroke-linecap="butt" stroke-dasharray="477.5" stroke-dashoffset="477.5" style="transition:stroke-dashoffset 1.4s cubic-bezier(.2,.7,.2,1)"/></svg><div class="t"><b id="cp">—</b><span>tappe pronte</span></div></div>
+  <div><ol class="tl" id="cl"></ol><div class="note" id="cn"></div></div></div>
+  <div class="road rv" id="road"></div>
+</section>
+
+<section id="team"><div class="rv"><p class="k" style="color:var(--orange)">Il team</p><h2>Tre persone, un gioco.</h2></div><div class="ppl rv" id="ppl"></div></section>
+
+<section id="sostieni"><div class="card support rv"><p class="k grad">Sostienici</p><h2>Aiutaci a finire il gioco.</h2><p class="sub" id="dt"></p>
+  <p class="k" style="color:var(--bronze-hi);margin-top:26px">Dove vanno le donazioni</p>
+  <ul class="uses"><li>Pubblicare il gioco su Steam</li><li>Musiche e suoni</li><li>Strumenti e abbonamenti di lavoro</li></ul>
+  <p class="mut">Anche una piccola donazione conta.</p>
+  <div><a class="cta warm" id="db" href="#">Sostienici</a><a class="cta2" id="sw" href="#" hidden>Wishlist su Steam</a></div></div></section>
 </main>
 <footer id="ft"></footer>
 
 <script src="i18n.js"></script>
 <script src="site.js"></script>
+<script src="fx.js"></script>
 <script>
-const {$,f,el}=site;
-Promise.all([site.cfg,site.data]).then(([C,D])=>{
+const {$,el}=site;
+Promise.all([site.cfg,site.data.catch(()=>({}))]).then(([C,D])=>{
   if(C.tagline)$('tag').textContent=C.tagline;
   site.countdown(C,$('cd'),$('cdl'));
-  /* trailer */
-  if(/^[\w-]{11}$/.test(C.trailer||'')){const i=el('iframe');i.src='https://www.youtube-nocookie.com/embed/'+C.trailer;i.title='Trailer';i.allow='accelerometer;encrypted-media;picture-in-picture;fullscreen';i.allowFullscreen=true;i.loading='lazy';$('vid').replaceChildren(i)}
-  /* galleria */
+  /* visore 3D */
+  const V=Viewer3D($('v3c')),tabs=$('v3t');
+  tabs.replaceChildren(...V.models.map(m=>{const b=el('button','cta2 sm',m.name);b.type='button';b.dataset.m=m.key;b.onclick=()=>V.select(m.key);return b}));
+  V.onchange=m=>{$('v3n').textContent=m.name;$('v3d').textContent=m.desc;tabs.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.m===m.key))};
+  V.select('spada');$('zi').onclick=()=>V.zoom(1.2);$('zo').onclick=()=>V.zoom(.83);
+  document.querySelectorAll('#cls [data-m]').forEach(b=>b.onclick=()=>{V.select(b.dataset.m);$("modelli").scrollIntoView({behavior:site.reduce?'auto':'smooth'})});
+  /* trailer (solo se c'è) */
+  if(/^[\w-]{11}$/.test(C.trailer||'')){const i=el('iframe');i.src='https://www.youtube-nocookie.com/embed/'+C.trailer;i.title='Trailer';i.allow='accelerometer;encrypted-media;picture-in-picture;fullscreen';i.allowFullscreen=true;i.loading='lazy';$('vid').replaceChildren(i);$('trailer').hidden=false}
+  /* galleria (solo se ci sono immagini) */
   const gl=(C.gallery||[]).map(g=>typeof g==='string'?{src:g}:g).filter(g=>/^media\/[\w\-./]+\.(png|jpe?g|webp|gif|mp4|webm)$/i.test(g.src||''));
-  if(gl.length)$('gal').replaceChildren(...gl.map(g=>{const fg=el('figure'),v=/\.(mp4|webm)$/i.test(g.src),m=el(v?'video':'img');m.src=g.src;if(v){m.controls=true;m.preload='metadata';m.playsInline=true}else{m.alt=g.caption||'Immagine del gioco';m.loading='lazy'}fg.append(m);if(g.caption)fg.append(el('figcaption','',g.caption));return fg}));
-  else{const ph=[['Il villaggio','linear-gradient(135deg,#1b2a4a,#3a1f5c)'],['Di notte','linear-gradient(135deg,#2a1b3a,#5c1f3a)'],['Combattimento','linear-gradient(135deg,#4a1b1b,#7a3a14)'],['Co-op','linear-gradient(135deg,#1b3a2a,#1f4a5c)'],['Gli ambienti','linear-gradient(135deg,#10222b,#1b3a3a)'],['I personaggi','linear-gradient(135deg,#222,#3a3a55)']];
-    $('gal').replaceChildren(...ph.map(([t,b])=>{const d=el('div','shot');d.style.setProperty('--b',b);d.append(el('b','',t),el('span','','In arrivo'));return d}))}
+  if(gl.length){$('galleria').hidden=false;$('gal').replaceChildren(...gl.map(g=>{const fg=el('figure'),v=/\.(mp4|webm)$/i.test(g.src),m=el(v?'video':'img');m.src=g.src;if(v){m.controls=true;m.preload='metadata';m.playsInline=true}else{m.alt=g.caption||'Immagine del gioco';m.loading='lazy'}fg.append(m);if(g.caption)fg.append(el('figcaption','',g.caption));return fg}))}
   /* progressi */
   const ch=D.chapter||[],dn=ch.filter(x=>x.status==='done').length,SL={done:'✓',doing:'…',todo:''};
-  $('cp').textContent=dn+' / '+(ch.length-ch.filter(x=>x.detail).length||ch.length);
-  setTimeout(()=>{$('rg').style.strokeDashoffset=477.5*(1-(ch.length?dn/ch.length:0))},300);
-  $('cl').replaceChildren(...ch.map(x=>{const li=el('li');li.append(el('span','dot '+x.status,SL[x.status]),el('span','',x.name));if(x.detail)li.append(el('span','mut','· '+x.detail));return li}));
-  $('cn').textContent=C.chapter_note||'';
-  const NU=D.numbers||{};
-  $('nums').replaceChildren(site.tile('Script di gioco',NU.scripts,'var(--blue)','file di codice'),site.tile('Scene',NU.scenes,'var(--purple)','livelli e menu'),site.tile('Modelli 3D',NU.models,'var(--orange)','di Nazar'),site.tile('Audio',NU.audio,'var(--pink)','musiche e suoni'));
+  if(ch.length){
+    $('cp').textContent=dn+' / '+ch.length;
+    setTimeout(()=>{$('rg').style.strokeDashoffset=477.5*(1-dn/ch.length)},300);
+    $('cl').replaceChildren(...ch.map(x=>{const li=el('li');li.append(el('span','dot '+x.status,SL[x.status]),el('span','',x.name));if(x.detail)li.append(el('span','mut','· '+x.detail));return li}));
+    $('cn').textContent=C.chapter_note||'';
+  }else $('chap').hidden=true;
+  $('road').replaceChildren(...(C.phases||[]).map((p,i)=>{const d=el('div','ph'+(i===C.phase_current?' now':''));d.append(el('div','nn',(i===C.phase_current?'ORA · ':'')+'FASE '+(i+1)),el('b','',p.name),el('div','mut',p.when),el('div','mut',p.what));return d}));
   /* team */
-  $('ppl').replaceChildren(...Object.values(C.people||{}).map((v,i)=>site.person(v,i)));
-  /* donazioni */
+  $('ppl').replaceChildren(...Object.values(C.people||{}).map((v,i)=>{const c=site.person(v,i);c.querySelector('.mut').replaceWith(el('span','role',v.role));if(v.bio)c.append(el('p','mut',v.bio));return c}));
+  /* sostegno */
   $('dt').textContent=C.donate_text||'';site.donate(C,$('db'));
-  if(/^https:\/\//.test(C.steam_url||'')){$('hs').textContent='Wishlist su Steam';$('hs').href=C.steam_url}
+  if(/^https:\/\//.test(C.steam_url||'')){$('hs').textContent='Wishlist su Steam';$('hs').href=C.steam_url;$('sw').href=C.steam_url;$('sw').target='_blank';$('sw').rel='noopener';$('sw').hidden=false}
   site.reveal();
 }).catch(()=>site.fail());
-</script><script src="fx.js"></script></body></html>
+</script></body></html>
