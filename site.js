@@ -51,8 +51,23 @@ if(nav){
   const sel=document.createElement('select');sel.className='lang';sel.setAttribute('aria-label','Language');SUP.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=NAMES[c];if(c===S.lang)o.selected=true;sel.append(o)});sel.onchange=()=>S.setLang(sel.value);nav.append(sel);
 }
 const ft=document.getElementById('ft');
-if(ft){const a=document.createElement('p');a.style.margin='0 0 6px';a.textContent=S.t('© 2026 Obolus Studio. Tutti i diritti riservati.');
-  const b=document.createElement('p');b.style.margin='0';b.append('Sons of the Black Lake · ');const l=document.createElement('a');l.href='team.html';l.textContent=S.t('Area team')+' 🔒';b.append(l);ft.replaceChildren(a,b)}
+if(ft){
+  const home=page==='index.html'||page==='',H=id=>(home?'':'index.html')+'#'+id,E=S.el;
+  const col=(t,links)=>{const d=E('div');d.append(E('h4','',S.t(t)));links.forEach(([h,x,ext])=>{const a=E('a','',S.t(x));a.href=h;if(ext){a.target='_blank';a.rel='noopener'}d.append(a)});return d};
+  const brand=E('div'),fb=E('div','fb'),im=E('img');im.src='media/logo.svg';im.alt='';im.width=34;im.height=34;fb.append(im,E('span','','Obolus Studio'));
+  brand.append(fb,E('p','',S.t('Un gioco dark fantasy open world, da giocare da soli o in tre.')));
+  const g=E('div','fgrid');
+  const build=C=>{
+    const sc=[];if(/^https:\/\//.test(C.steam_url||''))sc.push([C.steam_url,'Steam',1]);
+    if(/^https:\/\//.test(C.donate_url||''))sc.push([C.donate_url,'Ko-fi',1]);
+    const so=C.social||{};[['discord','Discord'],['youtube','YouTube'],['x','X'],['instagram','Instagram'],['tiktok','TikTok']].forEach(([k,n])=>{if(/^https:\/\//.test(so[k]||''))sc.push([so[k],n,1])});
+    g.replaceChildren(brand,
+      col('Esplora',[[H('gioco'),'Il gioco'],[H('modelli'),'In 3D'],[H('storia'),'La storia'],[H('progressi'),'Progressi'],[H('team'),'Il team']]),
+      col('Segui il progetto',sc.length?sc:[[H('sostieni'),'Sostienici']]),
+      col('Studio',[[H('press'),'Press kit'],[H('sostieni'),'Sostienici'],['team.html','Area team']]));
+    const bar=E('div','fbar',S.t('© 2026 Obolus Studio. Tutti i diritti riservati.')+' · Sons of the Black Lake');
+    ft.replaceChildren(g,bar)};
+  build({});S.cfg.then(build)}
 /* traduzione del contenuto della pagina (testo e attributi), anche quello creato dopo */
 if(li>0){
   const SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1};

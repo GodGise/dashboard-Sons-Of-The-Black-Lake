@@ -60,5 +60,13 @@
   "steam_url": null,
   "donate_url": "https://ko-fi.com/obolusstudio",
   "trailer": null,
-  "donate_text": "Se ti piace il progetto, puoi sostenerci con una donazione libera."
+  "donate_text": "Se ti piace il progetto, puoi sostenerci con una donazione libera.",
+  "social": {
+    "discord": null,
+    "youtube": null,
+    "x": null,
+    "instagram": null,
+    "tiktok": null
+  },
+  "contact_email": null
 }
