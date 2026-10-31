@@ -29,6 +29,11 @@ def trs(n):
     r[12], r[13], r[14] = t
     return r
 
+def rot(m, v):
+    r = [m[0] * v[0] + m[4] * v[1] + m[8] * v[2], m[1] * v[0] + m[5] * v[1] + m[9] * v[2], m[2] * v[0] + m[6] * v[1] + m[10] * v[2]]
+    l = math.sqrt(sum(x * x for x in r)) or 1.0
+    return [x / l for x in r]
+
 def apply(m, v):
     return [m[0] * v[0] + m[4] * v[1] + m[8] * v[2] + m[12],
             m[1] * v[0] + m[5] * v[1] + m[9] * v[2] + m[13],
@@ -94,6 +99,7 @@ def load_gltf(path):
                 idx = acc(prim['indices']) if 'indices' in prim else list(range(len(pos)))
                 col = acc(at['COLOR_0']) if 'COLOR_0' in at else None
                 uv = acc(at['TEXCOORD_0']) if 'TEXCOORD_0' in at else None
+                nor = acc(at['NORMAL']) if 'NORMAL' in at else None
                 mat = g.get('materials', [{}])[prim['material']] if 'material' in prim else {}
                 pbr = mat.get('pbrMetallicRoughness', {}); bc = pbr.get('baseColorFactor', [1, 1, 1, 1])
                 tex = pbr.get('baseColorTexture'); im = None
@@ -106,13 +112,14 @@ def load_gltf(path):
                         c = [sum(col[i][k] for i in tri) / 3 for k in range(3)]
                         c = [srgb(c[k] * bc[k]) for k in range(3)]
                     elif im is not None:
-                        u = sum(uv[i][0] for i in tri) / 3; v = sum(uv[i][1] for i in tri) / 3
-                        px = im.getpixel((int(min(max(u % 1.0, 0), .9999) * im.width), int(min(max(v % 1.0, 0), .9999) * im.height)))
+                        px = im.resize((1, 1)).getpixel((0, 0))  # colore medio: niente "macchie" per triangolo
                         c = [round(px[k] * bc[k]) for k in range(3)]
                     else:
                         c = [srgb(bc[k]) for k in range(3)]
                     if glow: c = [max(c[k], srgb(em[k])) for k in range(3)]
-                    faces.append({'p': p, 'c': c, 'g': 1 if glow else 0})
+                    fc = {'p': p, 'c': c, 'g': 1 if glow else 0}
+                    if nor: fc['n'] = [rot(m, nor[i]) for i in tri]
+                    faces.append(fc)
         for ch in n.get('children', []): walk(ch, m)
     ident = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
     sc = g['scenes'][g.get('scene', 0)]
@@ -156,15 +163,21 @@ def main():
     if a.paint:
         rules = []
         for part in a.paint.split(';'):
-            cond, col = part.rsplit('=', 1); col = col.strip().lstrip('#'); rules.append((cond.strip(), [int(col[i:i + 2], 16) for i in (0, 2, 4)]))
+            cond, col = part.rsplit('=', 1); col = col.strip().lstrip('#'); rules.append((cond.strip(), None if col == '-' else [int(col[i:i + 2], 16) for i in (0, 2, 4)]))
         ext = [max(mx[k] - mn[k], 1e-9) for k in range(3)]
         for f in faces:
             c = [sum(v[k] for v in f['p']) / 3 for k in range(3)]
             x, y, z = [(c[k] - mn[k]) / ext[k] for k in range(3)]; r = math.hypot(x - .5, y - .5) * 2
             for cond, col in rules:
-                if eval(cond, {'__builtins__': {}}, {'x': x, 'y': y, 'z': z, 'r': r}): f['c'] = col; break
+                if eval(cond, {'__builtins__': {}}, {'x': x, 'y': y, 'z': z, 'r': r}):
+                    if col: f['c'] = col
+                    break
     s = a.size / max(mx[k] - mn[k] for k in range(3))
-    out = [{'p': [[round(v[k] * s, 3) for k in range(3)] for v in f['p']], 'c': f['c'], 'g': f['g']} for f in faces]
+    out = []
+    for f in faces:
+        o = {'p': [[round(v[k] * s, 3) for k in range(3)] for v in f['p']], 'c': f['c'], 'g': f['g']}
+        if 'n' in f: o['n'] = [round(x, 2) for nv in f['n'] for x in nv]
+        out.append(o)
     n = len(out)
     print(f'{a.key}: {n} triangoli' + ('  (ATTENZIONE: più di 2500, il visore potrebbe essere lento)' if n > 2500 else ''))
     try: db = json.load(open(a.out))
