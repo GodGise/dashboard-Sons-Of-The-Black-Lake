@@ -49,7 +49,7 @@ function place(fs,x,y,z,o){o=o||{};const R=p=>{let a=p[0],b=p[1],c=p[2],t,cs,sn;
   if(o.ry){t=rad(o.ry);cs=Math.cos(t);sn=Math.sin(t);[a,c]=[a*cs+c*sn,-a*sn+c*cs]}
   if(o.rz){t=rad(o.rz);cs=Math.cos(t);sn=Math.sin(t);[a,b]=[a*cs-b*sn,a*sn+b*cs]}
   return [a+x,b+y,c+z]};
-  return fs.map(f=>({p:f.p.map(R),c:f.c,g:f.g,b:f.b}))}
+  return fs.map(f=>({p:f.p.map(R),c:f.c,g:f.g,b:f.b,n:f.n}))}
 function box(x,y,z,w,h,d,col,o){o=o||{};const X=w/2,Y=h/2,Z=d/2,v=[[-X,-Y,-Z],[X,-Y,-Z],[X,Y,-Z],[-X,Y,-Z],[-X,-Y,Z],[X,-Y,Z],[X,Y,Z],[-X,Y,Z]];
   const q=[[0,1,2,3],[4,5,6,7],[0,1,5,4],[3,2,6,7],[0,3,7,4],[1,2,6,5]].map(i=>i.map(k=>v[k]));
   return place(mk(q,col,[0,0,0],o.g),x,y,z,o)}
@@ -125,11 +125,14 @@ function Viewer(canvas){
     for(const f of M.faces){
       const p=f.p.map(v=>{let x=v[0],y=v[1]-M.cy,z=v[2];let a=x*cy+z*sy,c=-x*sy+z*cy;x=a;z=c;let b=y*cp-z*sp;c=y*sp+z*cp;return [x,b,c]});
       const n=newell(p),cen=mean(p);if(dot(n,[-cen[0],-cen[1],D-cen[2]])<=0)continue;
-      const nl=Math.hypot(...n)||1,sh=f.g?1:.36+.64*Math.max(0,(n[0]*L[0]+n[1]*L[1]+n[2]*L[2])/nl);
-      out.push({z:f.b?(f.b===1?-1e9:-5e8)+cen[2]:cen[2],p,c:f.c.map(v=>Math.min(255,Math.round(v*sh*(f.g?1.1:1))))})}
+      let nl=Math.hypot(...n)||1,nx=n[0]/nl,ny=n[1]/nl,nz=n[2]/nl;
+      if(f.n){let ax=(f.n[0]+f.n[3]+f.n[6])/3,ay=(f.n[1]+f.n[4]+f.n[7])/3,az=(f.n[2]+f.n[5]+f.n[8])/3;
+        let a=ax*cy+az*sy,c=-ax*sy+az*cy;ax=a;az=c;const b=ay*cp-az*sp;az=ay*sp+az*cp;ay=b;const l=Math.hypot(ax,ay,az)||1;nx=ax/l;ny=ay/l;nz=az/l}
+      const sh=f.g?1:.4+.6*Math.max(0,nx*L[0]+ny*L[1]+nz*L[2]);
+      out.push({sm:!!f.n,z:f.b?(f.b===1?-1e9:-5e8)+cen[2]:cen[2],p,c:f.c.map(v=>Math.min(255,Math.round(v*sh*(f.g?1.1:1))))})}
     out.sort((a,b)=>a.z-b.z);
     g.lineJoin='round';g.lineWidth=1;g.strokeStyle='rgba(0,0,0,.5)';
-    for(const f of out){g.beginPath();f.p.forEach((v,i)=>{const s=D/(D-v[2]),X=W/2+v[0]*s*k,Y=H*.5-v[1]*s*k;i?g.lineTo(X,Y):g.moveTo(X,Y)});g.closePath();g.fillStyle='rgb('+f.c.join(',')+')';g.fill();g.stroke()}}
+    for(const f of out){g.beginPath();f.p.forEach((v,i)=>{const s=D/(D-v[2]),X=W/2+v[0]*s*k,Y=H*.5-v[1]*s*k;i?g.lineTo(X,Y):g.moveTo(X,Y)});g.closePath();const col='rgb('+f.c.join(',')+')';g.fillStyle=col;g.fill();if(f.sm){g.strokeStyle=col;g.stroke();g.strokeStyle='rgba(0,0,0,.5)'}else g.stroke()}}
   function frame(t){
     const dt=Math.min(.05,(t-last)/1000||0);last=t;
     if(vis){if(!drag&&!reduce){idle+=dt;if(idle>1.2){yaw+=dt*.7;dirty=true}}
@@ -138,7 +141,7 @@ function Viewer(canvas){
   api.select=key=>{const m=MODELS.find(x=>x.key===key)||MODELS[0];cur=m;if(!m.cache)m.cache=prepare(m);M=m.cache;zoom=1;pitch=.32;dirty=true;idle=0;if(api.onchange)api.onchange(m)};
   api.zoom=f=>{zoom=Math.max(.7,Math.min(2.4,zoom*f));dirty=true};
   canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,t:e.pointerType};canvas.setPointerCapture(e.pointerId);canvas.classList.add('grab')});
-  canvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.x=e.clientX;drag.y=e.clientY;yaw+=dx*.012;if(drag.t==='mouse')pitch=Math.max(-.5,Math.min(1.1,pitch+dy*.008));dirty=true;idle=0});
+  canvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.x=e.clientX;drag.y=e.clientY;yaw+=dx*.012;if(drag.t==='mouse')pitch=Math.max(.04,Math.min(1.1,pitch+dy*.008));dirty=true;idle=0});
   const end=()=>{drag=null;idle=0;canvas.classList.remove('grab')};
   canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
   canvas.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();api.zoom(e.deltaY<0?1.08:.92)}},{passive:false});
@@ -151,7 +154,7 @@ window.Viewer3D=Viewer;
 Viewer.load=async function(){try{const r=await fetch('media/models/models.json',{cache:'no-cache'});if(!r.ok)return;const j=await r.json();
   for(const m of (j&&j.models)||[]){if(!/^[a-z0-9-]{1,24}$/.test(m.key||'')||!Array.isArray(m.faces)||!m.faces.length)continue;
     const fs=m.faces.filter(f=>Array.isArray(f.p)&&f.p.length>=3&&Array.isArray(f.c));
-    const o={key:m.key,name:String(m.name||m.key).slice(0,40),desc:String(m.desc||'').slice(0,160),build:()=>fs.map(f=>({p:f.p.map(v=>v.slice()),c:f.c.slice(),g:!!f.g}))};
+    const o={key:m.key,name:String(m.name||m.key).slice(0,40),desc:String(m.desc||'').slice(0,160),build:()=>fs.map(f=>({p:f.p.map(v=>v.slice()),c:f.c.slice(),g:!!f.g,n:Array.isArray(f.n)&&f.n.length===9?f.n:undefined}))};
     const i=MODELS.findIndex(x=>x.key===m.key);if(i>=0)MODELS[i]=o;else MODELS.push(o)}}catch(e){}};
 })();
 
