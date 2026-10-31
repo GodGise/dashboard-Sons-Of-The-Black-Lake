@@ -145,12 +145,24 @@ def load_obj(path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('file'); ap.add_argument('--key', required=True); ap.add_argument('--name', required=True)
-    ap.add_argument('--desc', default=''); ap.add_argument('--size', type=float, default=2.0, help="altezza/dimensione massima (default 2.0)")
+    ap.add_argument('--desc', default='');
+    ap.add_argument('--paint', default='', help="colora per zona i modelli grigi: 'y>0.5=#aeb8c6;x<0.2=#4a2f1b;1=#7a5230'. x,y,z = posizione 0..1 nel box del modello, r = distanza dal centro in xy (0..1). Vince la prima regola vera.")
+    ap.add_argument('--size', type=float, default=2.0, help="altezza/dimensione massima (default 2.0)")
     ap.add_argument('--out', default=os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'media', 'models', 'models.json'))
     a = ap.parse_args()
     faces = load_obj(a.file) if a.file.lower().endswith('.obj') else load_gltf(a.file)
     if not faces: sys.exit('Nessun triangolo trovato.')
     mn = [min(v[k] for f in faces for v in f['p']) for k in range(3)]; mx = [max(v[k] for f in faces for v in f['p']) for k in range(3)]
+    if a.paint:
+        rules = []
+        for part in a.paint.split(';'):
+            cond, col = part.rsplit('=', 1); col = col.strip().lstrip('#'); rules.append((cond.strip(), [int(col[i:i + 2], 16) for i in (0, 2, 4)]))
+        ext = [max(mx[k] - mn[k], 1e-9) for k in range(3)]
+        for f in faces:
+            c = [sum(v[k] for v in f['p']) / 3 for k in range(3)]
+            x, y, z = [(c[k] - mn[k]) / ext[k] for k in range(3)]; r = math.hypot(x - .5, y - .5) * 2
+            for cond, col in rules:
+                if eval(cond, {'__builtins__': {}}, {'x': x, 'y': y, 'z': z, 'r': r}): f['c'] = col; break
     s = a.size / max(mx[k] - mn[k] for k in range(3))
     out = [{'p': [[round(v[k] * s, 3) for k in range(3)] for v in f['p']], 'c': f['c'], 'g': f['g']} for f in faces]
     n = len(out)
